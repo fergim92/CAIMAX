@@ -1,4 +1,3 @@
-```markdown
 # Dashboard Web CAIMAX
 
 ## Descripción
@@ -55,5 +54,3 @@ Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE.md
 - **Desarrollador:** Gimenez Fernando
 - **Correo Electrónico:** gimenezfernandomarcos@gmail.com 
 - **GitHub:** [fergim92](https://github.com/fergim92)
-
-```
