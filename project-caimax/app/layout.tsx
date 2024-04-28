@@ -3,14 +3,19 @@ import '@/app/ui/global.css';
 import { Metadata } from 'next';
 
 import { inter } from '@/app/ui/fonts';
+import Particles from '@/app/ui/particles';
+import { ThemeProvider } from '@/context/theme-provider';
+import Footer from '@/app/ui/footer';
+import Header from '@/app/ui/header';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Acme Dashboard',
-    default: 'Acme Dashboard',
+    template: '%s | CAIMAX Dashboard',
+    default: 'CAIMAX Dashboard',
   },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
-  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+  description:
+    'Proyecto CAIMAX de la materia Laboratorio de Sistemas Embebidos UNRN',
+  metadataBase: new URL('https://unrn.edu.ar/'),
 };
 export default function RootLayout({
   children,
@@ -19,7 +24,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <ThemeProvider>
+        <Particles />
+        <body
+          className={`${inter.className} antialiased dark:bg-stone-950`}
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </ThemeProvider>
     </html>
   );
 }

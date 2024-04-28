@@ -17,5 +17,11 @@
     },
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    } // optional but recommended
+    }, // optional but recommended
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+      "strings": "on"
+    }
   }
