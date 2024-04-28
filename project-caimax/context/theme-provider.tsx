@@ -3,15 +3,8 @@ import { useState, useMemo, useEffect } from 'react';
 import ThemeContext from './theme-context';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState(
-    localStorage?.getItem('theme')
-      ? localStorage.getItem('theme') == 'dark'
-        ? 'dark'
-        : 'light'
-      : window.matchMedia('(prefers-color-scheme: dark)')
-        ? 'dark'
-        : 'light',
-  );
+  const [theme, setTheme] = useState('dark');
+  const [themeLoaded, setThemeLoaded] = useState(false);
 
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -21,18 +14,22 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       setTheme(theme);
       localStorage.setItem('theme', theme);
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      setThemeLoaded(true);
     };
 
     const handleSystemThemeChange = (e: MediaQueryListEvent) => {
       const newTheme = e.matches ? 'dark' : 'light';
       applyTheme(newTheme);
+      setThemeLoaded(true);
     };
 
     // Set the initial theme based on storage or system preference
     if (storedTheme) {
       applyTheme(storedTheme);
+      setThemeLoaded(true);
     } else {
       applyTheme(prefersDark.matches ? 'dark' : 'light');
+      setThemeLoaded(true);
     }
 
     // Event listener for changes in the system theme
@@ -51,11 +48,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 
-  const contextValue = useMemo(() => ({ theme, toggleTheme }), [theme]);
-
+  const contextValue = useMemo(
+    () => ({ theme, themeLoaded, toggleTheme }),
+    [theme],
+  );
   return (
     <ThemeContext.Provider value={contextValue}>
-      {children}
+      {themeLoaded ? children : null}
     </ThemeContext.Provider>
   );
 };
