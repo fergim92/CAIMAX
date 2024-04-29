@@ -9,7 +9,7 @@ const ToggleTheme: React.FC = () => {
     <button
       id="toggle"
       onClick={toggleTheme}
-      className="right-5 top-5 px-2 py-1 text-4xl font-semibold text-white"
+      className="px-5 text-4xl font-semibold"
     >
       {theme === 'dark' ? '😎' : '😊'}
     </button>

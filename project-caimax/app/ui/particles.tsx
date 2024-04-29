@@ -33,7 +33,7 @@ const ParticlesComponent = () => {
       autoPlay: true,
       background: {
         color: {
-          value: theme == 'dark' ? 'rgb(12 10 9)' : '#fff',
+          value: theme == 'dark' ? '#101820' : '#FCF6F5',
         },
         image: '',
         position: '',
@@ -45,7 +45,7 @@ const ParticlesComponent = () => {
         composite: 'destination-out',
         cover: {
           color: {
-            value: '#fff',
+            value: '#FCF6F5',
           },
           opacity: 1,
         },

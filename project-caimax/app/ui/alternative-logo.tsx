@@ -12,8 +12,8 @@ const AlternativeLogo = () => {
     <Link href="/">
       <Image
         src={theme === 'dark' ? LogoDark : LogoLight}
-        width={150}
-        height={150}
+        width={200}
+        height={200}
         className="mx-3 my-3 select-none px-2 py-2 md:block"
         alt="CAIMAX AlternativeLogo"
         draggable="false"

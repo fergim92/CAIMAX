@@ -15,15 +15,22 @@ import { authenticate } from '@/app/lib/actions';
 export default function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   return (
-    <form action={dispatch} className="space-y-3">
-      <div className="flex-1 rounded-lg bg-gray-300 px-6 pb-4 pt-8 dark:bg-stone-900">
-        <h1 className={`${lusitana.className} mb-3 text-2xl dark:text-gray-50`}>
+    <form
+      action={dispatch}
+      className="bg-lightPaper dark:bg-darkPaper space-y-3 rounded-lg"
+      style={{
+        boxShadow:
+          'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
+      }}
+    >
+      <div className="flex-1 rounded-lg  px-6 pb-4 pt-8 ">
+        <h1 className={`${lusitana.className} mb-3 text-center text-2xl`}>
           Iniciar sesión para continuar
         </h1>
         <div className="w-full">
           <div>
             <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900 dark:text-gray-50"
+              className="mb-3 mt-5 block text-xs font-medium  "
               htmlFor="email"
             >
               Email
@@ -42,7 +49,7 @@ export default function LoginForm() {
           </div>
           <div className="mt-4">
             <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900 dark:text-gray-50"
+              className="mb-3 mt-5 block text-xs font-medium "
               htmlFor="password"
             >
               Contraseña

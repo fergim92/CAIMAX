@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.7.1",
     "@vercel/style-guide": "^6.0.0",
+    "daisyui": "^4.10.2",
     "dotenv": "^16.4.5",
     "eslint-config-love": "^44.0.0",
     "eslint-config-next": "14.2.3",

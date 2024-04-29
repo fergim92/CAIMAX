@@ -1,6 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Estilos por defecto para el modo claro */
+
+@layer utilities {
+  .bg-lightBackground {
+    @apply bg-[#FCF6F5]; 
+  }
+  .bg-lightPaper {
+    @apply bg-[#ddd4d3]; 
+  }
+  .bg-darkBackground {
+    @apply bg-[#101820]; 
+  }
+  .bg-darkPaper {
+    @apply bg-[#17222e]; 
+  }
+  .text-lightText {
+    @apply text-[#101820]; 
+  }
+  .text-darkText {
+    @apply text-[#FCF6F5];
+  }
+}
+
+/* Estilos por defecto para el modo claro */
+body {
+  @apply bg-lightBackground text-lightText;
+}
+
+/* Estilos por defecto para el modo oscuro */
+.dark body {
+  @apply bg-darkBackground text-darkText;
+}
 
 input[type='number'] {
   -moz-appearance: textfield;

@@ -16,6 +16,22 @@ export const metadata: Metadata = {
   description:
     'Proyecto CAIMAX de la materia Laboratorio de Sistemas Embebidos UNRN',
   metadataBase: new URL('https://unrn.edu.ar/'),
+  openGraph: {
+    title: 'CAIMAX Dashboard',
+    description:
+      'Proyecto CAIMAX de la materia Laboratorio de Sistemas Embebidos UNRN',
+    type: 'website',
+    locale: 'es_AR',
+    url: 'https://caimax.vercel.app',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 800,
+        height: 600,
+        alt: 'CAIMAX OpenGraph Image',
+      },
+    ],
+  },
 };
 export default function RootLayout({
   children,
@@ -27,7 +43,7 @@ export default function RootLayout({
       <ThemeProvider>
         <Particles />
         <body
-          className={`${inter.className} antialiased dark:bg-stone-950`}
+          className={`${inter.className} antialiased`}
           style={{
             minHeight: '100vh',
             display: 'flex',
