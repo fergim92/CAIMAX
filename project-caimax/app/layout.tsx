@@ -23,14 +23,12 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_AR',
     url: 'https://caimax.vercel.app',
-    images: [
-      {
-        url: '/opengraph-image.png',
-        width: 800,
-        height: 600,
-        alt: 'CAIMAX OpenGraph Image',
-      },
-    ],
+    images: {
+      url: './opengraph-image.png',
+      width: 800,
+      height: 600,
+      alt: 'CAIMAX OpenGraph Image',
+    },
   },
 };
 export default function RootLayout({
