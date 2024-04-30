@@ -24,9 +24,18 @@
   }
 }
 
+html, label {
+  cursor: url('../../public/default_cursor.png'), default;
+}
+
+a, button, input, textarea { /* Elementos interactivos comunes */
+  cursor: url('../../public/pointer_cursor.png'), pointer;
+}
+
 /* Estilos por defecto para el modo claro */
 body {
   @apply bg-lightBackground text-lightText;
+  
 }
 
 /* Estilos por defecto para el modo oscuro */
