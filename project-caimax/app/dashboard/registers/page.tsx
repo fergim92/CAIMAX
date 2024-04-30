@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
+  title: 'Registros',
 };
 
 export default async function Page() {
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1>Registros</h1>
     </main>
   );
 }

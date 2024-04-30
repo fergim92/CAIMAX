@@ -6,14 +6,20 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import ThemeContext from '@/context/theme-context';
 
-const AlternativeLogo = () => {
+const AlternativeLogo = ({
+  width,
+  height,
+}: {
+  width: number;
+  height: number;
+}) => {
   const { theme } = useContext(ThemeContext);
   return (
     <Link href="/">
       <Image
         src={theme === 'dark' ? LogoDark : LogoLight}
-        width={200}
-        height={200}
+        width={width}
+        height={height}
         className="mx-3 my-3 select-none px-2 py-2 md:block"
         alt="CAIMAX AlternativeLogo"
         draggable="false"
