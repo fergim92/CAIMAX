@@ -9,9 +9,11 @@ import ThemeContext from '@/context/theme-context';
 const AlternativeLogo = ({
   width,
   height,
+  className,
 }: {
   width: number;
   height: number;
+  className?: string;
 }) => {
   const { theme } = useContext(ThemeContext);
   return (
@@ -20,7 +22,7 @@ const AlternativeLogo = ({
         src={theme === 'dark' ? LogoDark : LogoLight}
         width={width}
         height={height}
-        className="mx-3 my-3 select-none px-2 py-2 md:block"
+        className={`${className} mx-3 my-3 select-none px-2 py-2 md:block`}
         alt="CAIMAX AlternativeLogo"
         draggable="false"
         style={{

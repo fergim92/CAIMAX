@@ -29,7 +29,7 @@ export default function Page() {
             Ingresar
           </Link>
           <p className="text-skin-base mt-4 text-center text-lg">
-            Proyecto CAIMAX de la materia Laboratorio de Sistemas Embebidos UNRN
+            Control de Acceso Inteligente de Máxima Seguridad
           </p>
         </div>
       </main>

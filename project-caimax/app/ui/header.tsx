@@ -3,9 +3,9 @@ import ToggleTheme from './toggle-theme';
 
 const Header = () => {
   return (
-    <header className="flex w-full justify-between">
-      <AlternativeLogo width={250} height={250} />
-      <ToggleTheme />
+    <header className="flex w-full items-center justify-between">
+      <AlternativeLogo width={200} height={200} />
+      <ToggleTheme className="m-3 p-2 text-4xl" />
     </header>
   );
 };
