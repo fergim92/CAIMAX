@@ -5,10 +5,10 @@
 
 @layer utilities {
   .bg-lightBackground {
-    @apply bg-[#FCF6F5]; 
+    @apply bg-[#ddd4d3]; 
   }
   .bg-lightPaper {
-    @apply bg-[#ddd4d3]; 
+    @apply bg-[#FCF6F5]; 
   }
   .bg-darkBackground {
     @apply bg-[#101820]; 

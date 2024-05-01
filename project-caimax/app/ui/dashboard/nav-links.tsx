@@ -39,7 +39,7 @@ export default function NavLinks() {
             className={clsx(
               'px-5 py-2 hover:text-green-600 md:flex md:w-full',
               {
-                'md:dark:bg-lightBackground md:bg-darkBackground text-green-600':
+                'md:dark:bg-lightPaper md:bg-darkBackground text-green-600':
                   pathname === link.href,
               },
             )}

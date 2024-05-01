@@ -5,7 +5,6 @@ import { Metadata } from 'next';
 import { inter } from '@/app/ui/fonts';
 import Particles from '@/app/ui/particles';
 import { ThemeProvider } from '@/context/theme-provider';
-import Footer from '@/app/ui/footer';
 
 export const metadata: Metadata = {
   title: {
@@ -50,7 +49,6 @@ export default function RootLayout({
           }}
         >
           {children}
-          <Footer />
         </body>
       </ThemeProvider>
     </html>

@@ -2,28 +2,40 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
-export type User = {
+export type Admin = {
   id: string;
+  role: number;
   name: string;
   email: string;
+  username: string;
   password: string;
 };
 
-export type Customer = {
+export type User = {
   id: string;
+  role: number;
   name: string;
-  email: string;
-  image_url: string;
+  last_name: string;
+  dni: number;
 };
 
-export type Invoice = {
+export type AccessActivity = {
   id: string;
-  customer_id: string;
-  amount: number;
-  date: string;
-  // In TypeScript, this is called a string union type.
-  // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
-  status: 'pending' | 'paid';
+  user_id: string;
+  datetime: string;
+  event: string;
+  access_type: 'Huella digital' | 'RFID';
+};
+
+export type AccessActivityWithUser = {
+  id: string;
+  name: string;
+  last_name: string;
+  role: string;
+  user_id: string;
+  datetime: string;
+  event: string;
+  access_type: 'Huella digital' | 'RFID';
 };
 
 export type Revenue = {
@@ -65,19 +77,18 @@ export type CustomersTableType = {
   total_paid: number;
 };
 
-export type FormattedCustomersTable = {
+export type FormattedUsersTable = {
   id: string;
   name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: string;
-  total_paid: string;
+  last_name: string;
+  dni: string;
 };
 
-export type CustomerField = {
+export type UserField = {
   id: string;
   name: string;
+  last_name: string;
+  dni: string;
 };
 
 export type InvoiceForm = {

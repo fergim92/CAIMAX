@@ -33,7 +33,7 @@ const ParticlesComponent = () => {
       autoPlay: true,
       background: {
         color: {
-          value: theme == 'dark' ? '#101820' : '#FCF6F5',
+          value: theme == 'dark' ? '#101820' : '#ddd4d3',
         },
         image: '',
         position: '',

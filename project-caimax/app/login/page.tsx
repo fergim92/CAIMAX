@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 
 import LoginForm from '@/app/ui/login-form';
 import Header from '../ui/header';
+import Footer from '../ui/footer';
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -14,6 +15,7 @@ export default function LoginPage() {
       <main className="flex flex-col items-center justify-center">
         <LoginForm />
       </main>
+      <Footer />
     </>
   );
 }

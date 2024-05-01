@@ -5,16 +5,16 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 
 import { sql } from '@vercel/postgres';
-import type { User } from '@/app/lib/definitions';
+import type { Admin } from '@/app/lib/definitions';
 
-async function getUser(email: string): Promise<User | undefined> {
+async function getAdmin(email: string): Promise<Admin | undefined> {
   try {
-    const user =
-      await sql<User>`SELECT id, name, email, password FROM administrators WHERE email=${email}`;
-    return user.rows[0];
+    const admin =
+      await sql<Admin>`SELECT id, name, email, password FROM administrators WHERE email=${email}`;
+    return admin.rows[0];
   } catch (error) {
-    console.error('Failed to fetch user:', error);
-    throw new Error('Failed to fetch user.');
+    console.error('Failed to fetch admin:', error);
+    throw new Error('Failed to fetch admin.');
   }
 }
 
@@ -28,11 +28,11 @@ export const { auth, signIn, signOut } = NextAuth({
           .safeParse(credentials);
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
-          const user = await getUser(email);
-          if (!user) return null;
-          const passwordsMatch = await bcrypt.compare(password, user.password);
+          const admin = await getAdmin(email);
+          if (!admin) return null;
+          const passwordsMatch = await bcrypt.compare(password, admin.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) return admin;
         }
         console.log('Invalid credentials');
         return null;

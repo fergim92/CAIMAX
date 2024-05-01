@@ -22,7 +22,7 @@ const AlternativeLogo = ({
         src={theme === 'dark' ? LogoDark : LogoLight}
         width={width}
         height={height}
-        className={`${className} mx-3 my-3 select-none px-2 py-2 md:block`}
+        className={`${className} m-2 select-none p-2 md:block`}
         alt="CAIMAX AlternativeLogo"
         draggable="false"
         style={{

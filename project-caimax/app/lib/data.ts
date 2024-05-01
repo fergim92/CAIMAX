@@ -1,30 +1,69 @@
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import {
-  CustomerField,
-  CustomersTableType,
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
+  Admin,
   User,
-  Revenue,
+  AccessActivityWithUser,
 } from './definitions';
 import { formatCurrency } from './utils';
 
-export async function fetchRevenue() {
-  // Add noStore() here to prevent the response from being cached.
-  noStore();
-  // This is equivalent to in fetch(..., {cache: 'no-store'}).
-
+export async function getUserById(id: string) {
   try {
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
-    return data.rows;
+    const user = await sql`SELECT * FROM users WHERE id=${id}`;
+    return user.rows[0] as User;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    console.error('Failed to fetch user:', error);
+    throw new Error('Failed to fetch user.');
   }
 }
+export async function getUsers() {
+  try {
+    const data = await sql<User>`
+      SELECT
+        id,
+        name,
+        last_name,
+        dni, 
+        role
+      FROM users
+      ORDER BY name ASC
+    `;
 
+    const users = data.rows;
+    return users;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all users.');
+  }
+}
+export async function getAdminByEmail(email: string) {
+  try {
+    const admin = await sql`SELECT * FROM administrators WHERE email=${email}`;
+    return admin.rows[0] as Admin;
+  } catch (error) {
+    console.error('Failed to fetch admin:', error);
+    throw new Error('Failed to fetch admin.');
+  }
+}
+export async function getAccessActivity() {
+  noStore();
+  try {
+    const data = await sql<AccessActivityWithUser>`
+      SELECT access_activity.id, access_activity.event, access_activity.access_type, access_activity.datetime,
+      access_activity.user_id, users.name, users.last_name, users.role
+      FROM access_activity
+      JOIN users ON access_activity.user_id = users.id
+      ORDER BY access_activity.datetime DESC`;
+    const access_activity = data.rows;
+    return access_activity;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all access activity.');
+  }
+}
 export async function fetchLatestInvoices() {
   noStore();
   try {
@@ -164,66 +203,5 @@ export async function fetchInvoiceById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
-  }
-}
-
-export async function fetchCustomers() {
-  try {
-    const data = await sql<CustomerField>`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
-
-    const customers = data.rows;
-    return customers;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
-  }
-}
-
-export async function fetchFilteredCustomers(query: string) {
-  try {
-    const data = await sql<CustomersTableType>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `;
-
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
-    }));
-
-    return customers;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
-  }
-}
-
-export async function getUser(email: string) {
-  try {
-    const user = await sql`SELECT * FROM users WHERE email=${email}`;
-    return user.rows[0] as User;
-  } catch (error) {
-    console.error('Failed to fetch user:', error);
-    throw new Error('Failed to fetch user.');
   }
 }

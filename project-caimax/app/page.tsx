@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LogoDark from '@/public/logos/Main_Logo_White_Green.png';
 import Header from './ui/header';
+import Footer from './ui/footer';
 
 export default function Page() {
   return (
@@ -33,6 +34,7 @@ export default function Page() {
           </p>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
