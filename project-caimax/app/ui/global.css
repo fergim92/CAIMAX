@@ -1,61 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Estilos por defecto para el modo claro */
-
-@layer utilities {
-  .bg-lightBackground {
-    @apply bg-[#ddd4d3]; 
-  }
-  .bg-lightPaper {
-    @apply bg-[#FCF6F5]; 
-  }
-  .bg-darkBackground {
-    @apply bg-[#101820]; 
-  }
-  .bg-darkPaper {
-    @apply bg-[#17222e]; 
-  }
-  .text-lightText {
-    @apply text-[#101820]; 
-  }
-  .text-darkText {
-    @apply text-[#FCF6F5];
-  }
-}
 
 html, label {
   cursor: url('../../public/default_cursor.png'), default;
 }
 
-a, button, input, textarea { /* Elementos interactivos comunes */
+a, button, input, textarea{ /* Elementos interactivos comunes */
   cursor: url('../../public/pointer_cursor.png'), pointer;
-}
-
-/* Estilos por defecto para el modo claro */
-body {
-  @apply bg-lightBackground text-lightText;
-  
-}
-
-/* Estilos por defecto para el modo oscuro */
-.dark body {
-  @apply bg-darkBackground text-darkText;
-}
-
-input[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 #tsparticles {
@@ -63,4 +15,16 @@ input[type='number']::-webkit-outer-spin-button {
   width: 100%;
   height: 100%;
   z-index: -1;
+}
+
+[type='text'], input:where(:not([type])), [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], [multiple], textarea, select{
+  padding: .5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{
+  border: none;
+  outline:none !important;
+  --tw-ring-shadow: none !important;
 }

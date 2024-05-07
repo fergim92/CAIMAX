@@ -6,7 +6,11 @@ const ToggleTheme: React.FC<{ className?: string }> = ({ className }) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <button id="toggle" onClick={toggleTheme} className={className}>
+    <button
+      id="toggle"
+      onClick={toggleTheme}
+      className={`${className} transition-all duration-200 active:scale-90`}
+    >
       {theme === 'dark' ? '😎' : '😊'}
     </button>
   );

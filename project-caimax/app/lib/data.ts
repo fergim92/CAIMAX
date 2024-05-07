@@ -64,6 +64,21 @@ export async function getAccessActivity() {
     throw new Error('Failed to fetch all access activity.');
   }
 }
+export async function getAccessActivityByUserId(id: string) {
+  noStore();
+  try {
+    const data = await sql<AccessActivityWithUser>`
+      SELECT id, event, access_type, datetime, user_id
+      FROM access_activity
+      WHERE user_id = ${id}
+      ORDER BY datetime DESC`;
+    const access_activity = data.rows;
+    return access_activity;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all access activity.');
+  }
+}
 export async function fetchLatestInvoices() {
   noStore();
   try {

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import LogoDark from '@/public/logos/Main_Logo_White_Green.png';
 import Header from './ui/header';
 import Footer from './ui/footer';
+import { Button } from '@nextui-org/react';
 
 export default function Page() {
   return (
@@ -23,12 +24,12 @@ export default function Page() {
             }}
           />
 
-          <Link
-            href="/login"
-            className="mt-1 rounded-md bg-green-400 px-4 py-2 text-lg hover:bg-green-600"
-          >
-            Ingresar
+          <Link href="/login">
+            <Button color="primary" variant="ghost">
+              Ingresar
+            </Button>
           </Link>
+
           <p className="text-skin-base mt-4 text-center text-lg">
             Control de Acceso Inteligente de Máxima Seguridad
           </p>

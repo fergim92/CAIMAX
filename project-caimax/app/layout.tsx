@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import { inter } from '@/app/ui/fonts';
 import Particles from '@/app/ui/particles';
 import { ThemeProvider } from '@/context/theme-provider';
+import { NextUIProviderContext } from '@/context/nextui-provider';
 
 export const metadata: Metadata = {
   title: {
@@ -37,19 +38,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <Particles />
-        <body
-          className={`${inter.className} antialiased`}
-          style={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {children}
-        </body>
+        <NextUIProviderContext>
+          <body
+            className={`${inter.className} antialiased`}
+            style={{
+              minHeight: '100vh',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Particles />
+            {children}
+          </body>
+        </NextUIProviderContext>
       </ThemeProvider>
     </html>
   );
