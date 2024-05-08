@@ -17,6 +17,9 @@ export type User = {
   name: string;
   last_name: string;
   dni: number;
+  fingerprint: string;
+  rfid: string;
+  tag_rfid: string;
 };
 
 export type AccessActivity = {
@@ -34,7 +37,9 @@ export type AccessActivityWithUser = {
   role: string;
   user_id: string;
   datetime: string;
+  exit_datetime: string;
   event: string;
+  location: string;
   access_type: 'Huella digital' | 'RFID';
 };
 

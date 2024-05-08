@@ -5,7 +5,7 @@ const UserInfo = async () => {
   return (
     <p className="mb-3 text-center">
       Bienvenido{' '}
-      <span className=" font-bold text-green-400">{session?.user?.name}!</span>
+      <span className=" font-bold text-primary">{session?.user?.name}!</span>
     </p>
   );
 };

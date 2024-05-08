@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1 className="text-2xl">Dashboard</h1>
     </main>
   );
 }

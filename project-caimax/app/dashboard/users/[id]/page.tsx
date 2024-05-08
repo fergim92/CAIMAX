@@ -2,6 +2,9 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getAccessActivityByUserId, getUserById } from '@/app/lib/data';
 import moment from 'moment';
+import Link from 'next/link';
+import { Button } from '@nextui-org/react';
+import { UserForm } from '@/app/ui/users/user-form';
 
 // UUIDs vs. Auto-incrementing Keys
 // We use UUIDs instead of incrementing keys (e.g., 1, 2, 3, etc.).
@@ -25,88 +28,134 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
   return (
     <main>
-      <h1>
-        {user.last_name} {user.name}: {user.dni}
-      </h1>
-      <form>
-        <label htmlFor="name">Nombre</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          defaultValue={user.name}
-          readOnly
-          className="block w-full border border-stone-950 p-2 text-black dark:border-gray-700"
-        />
-      </form>
-      <table className="bg-lightPaper dark:bg-darkPaper mt-5 w-full table-auto  ">
-        <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
-          <tr>
-            <th
-              scope="col"
-              className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
+      <div className="flex justify-between">
+        <h1 className="text-2xl">Detalles de usuario</h1>
+        <Link href="/dashboard/users">
+          <Button color="primary" variant="ghost" className="flex md:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-4 w-4"
             >
-              Acceso
-            </th>
-            <th
-              scope="col"
-              className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-            >
-              Evento
-            </th>
-            <th
-              scope="col"
-              className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-            >
-              Fecha
-            </th>
-            <th
-              scope="col"
-              className="border-collapse border-b-2 border-stone-950 px-6 py-3 dark:border-white"
-            >
-              Hora
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {userActivity.length === 0 ? (
-            <tr>
-              <td colSpan={4} className="py-2 text-center">
-                No hay registros
-              </td>
-            </tr>
-          ) : (
-            userActivity.map((activity) => (
-              <tr
-                key={activity.id}
-                className="border-collapse text-center hover:bg-gray-200 dark:hover:bg-gray-600"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              />
+            </svg>
+          </Button>
+          <Button
+            color="primary"
+            variant="ghost"
+            className="hidden md:flex"
+            startContent={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-5 w-5"
               >
-                <td
-                  scope="row"
-                  className="border-darkPaper border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {activity.access_type}
-                </td>
-                <td
-                  scope="row"
-                  className=" border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {activity.event}
-                </td>
-                <td
-                  scope="row"
-                  className="border-collapse  border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {moment(activity.datetime).format('DD/MM/YYYY')}
-                </td>
-                <td scope="row" className=" px-2 py-1">
-                  {moment(activity.datetime).format('HH:mm:ss')}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                />
+              </svg>
+            }
+          >
+            Volver
+          </Button>
+        </Link>
+      </div>
+
+      <UserForm data={user} />
+      <div className="relative overflow-x-auto shadow-xl sm:rounded-lg">
+        <table className="mt-5 w-full table-auto bg-paper">
+          <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
+            <tr>
+              <th
+                scope="col"
+                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
+              >
+                Acceso
+              </th>
+              <th
+                scope="col"
+                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
+              >
+                Lugar
+              </th>
+              <th
+                scope="col"
+                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
+              >
+                Fecha
+              </th>
+              <th
+                scope="col"
+                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
+              >
+                Entrada
+              </th>
+              <th
+                scope="col"
+                className="border-collapse border-b-2 border-stone-950 px-6 py-3 dark:border-white"
+              >
+                Salida
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {userActivity.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-2 text-center">
+                  No hay registros
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              userActivity.map((activity) => (
+                <tr
+                  key={activity.id}
+                  className="border-collapse text-center hover:bg-gray-200 dark:hover:bg-gray-600"
+                >
+                  <td
+                    scope="row"
+                    className="border-darkPaper border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                  >
+                    {activity.access_type}
+                  </td>
+                  <td
+                    scope="row"
+                    className=" border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                  >
+                    {activity.location}
+                  </td>
+                  <td
+                    scope="row"
+                    className="border-collapse  border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                  >
+                    {moment(activity.datetime).format('DD/MM/YYYY')}
+                  </td>
+                  <td
+                    scope="row"
+                    className="border-collapse  border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                  >
+                    {moment(activity.datetime).format('HH:mm:ss')}
+                  </td>
+                  <td scope="row" className=" px-2 py-1">
+                    {moment(activity.exit_datetime).format('HH:mm:ss')}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }

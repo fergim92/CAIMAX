@@ -16,7 +16,7 @@ export default async function Page() {
     <main>
       <h1 className="text-2xl">Registros</h1>
       <div className="relative overflow-x-auto shadow-xl sm:rounded-lg">
-        <table className="bg-lightPaper dark:bg-darkPaper mt-5 w-full table-auto  ">
+        <table className="mt-5 w-full table-auto bg-paper  ">
           <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
             <tr>
               <th
@@ -83,7 +83,7 @@ export default async function Page() {
                 </td>
                 <td
                   scope="row"
-                  className="border-darkPaper border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                  className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
                 >
                   {activity.access_type}
                 </td>

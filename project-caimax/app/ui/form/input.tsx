@@ -13,3 +13,5 @@ export const InputComponent: React.FC<InputProps> = (props) => {
     />
   );
 };
+
+export { Input };

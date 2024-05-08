@@ -6,7 +6,7 @@ import SignoutButton from './signout-button';
 
 export default function SideNav() {
   return (
-    <div className="dark:bg-darkPaper bg-lightPaper flex flex-col justify-between">
+    <div className="flex flex-col justify-between bg-paper">
       <div>
         <div className="flex flex-row items-center justify-between ">
           <AlternativeLogo width={160} height={160} />

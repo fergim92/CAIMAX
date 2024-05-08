@@ -9,7 +9,7 @@ const SignoutButton = () => {
         await signOut();
       }}
     >
-      <button className="flex items-center justify-center px-5 py-2 hover:text-green-600 md:w-full">
+      <button className="flex items-center justify-center px-5 py-2 hover:text-primary md:w-full">
         <PowerIcon className="w-6" />
         <div className="hidden md:block">Cerrar sesión</div>
       </button>

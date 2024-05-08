@@ -19,6 +19,21 @@ export async function getUserById(id: string) {
     throw new Error('Failed to fetch user.');
   }
 }
+export async function updateUser(
+  id: string,
+  name: string,
+  last_name: string,
+  dni: number,
+  role: number,
+) {
+  try {
+    await sql`UPDATE users SET name=${name}, last_name=${last_name}, dni=${dni}, role=${role} WHERE id=${id}`;
+  } catch (error) {
+    console.error('Failed to update user:', error);
+    throw new Error('Failed to update user.');
+  }
+}
+
 export async function getUsers() {
   try {
     const data = await sql<User>`
@@ -68,9 +83,12 @@ export async function getAccessActivityByUserId(id: string) {
   noStore();
   try {
     const data = await sql<AccessActivityWithUser>`
-      SELECT id, event, access_type, datetime, user_id
+      SELECT access_activity.id, access_activity.event, access_activity.access_type, 
+      access_activity.datetime, access_activity.exit_datetime, access_activity.user_id, 
+      access_activity.lector_id, lectors.location
       FROM access_activity
-      WHERE user_id = ${id}
+      JOIN lectors ON access_activity.lector_id = lectors.id
+      WHERE access_activity.user_id = ${id}
       ORDER BY datetime DESC`;
     const access_activity = data.rows;
     return access_activity;
