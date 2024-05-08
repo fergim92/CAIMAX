@@ -125,7 +125,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 >
                   <td
                     scope="row"
-                    className="border-darkPaper border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
+                    className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
                   >
                     {activity.access_type}
                   </td>
