@@ -113,7 +113,7 @@ export const UserForm = ({ data }: { data: User }) => {
             color: theme === 'dark' ? '#FCF6F5' : '#101820',
           });
         }}
-        className="mt-5 rounded-lg bg-paper p-5 shadow-xl"
+        className="bg-lightPaper dark:bg-darkPaper mt-5 rounded-lg p-5 shadow-xl"
       >
         <div className="flex flex-col gap-3 md:flex-row md:justify-between md:pb-3">
           <Input

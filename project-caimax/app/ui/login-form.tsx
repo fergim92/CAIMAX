@@ -37,7 +37,7 @@ export default function LoginForm() {
   return (
     <form
       action={dispatch}
-      className="bg-paper space-y-3 rounded-lg"
+      className="bg-lightPaper dark:bg-darkPaper space-y-3 rounded-lg"
       style={{
         boxShadow:
           'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
@@ -180,8 +180,8 @@ export default function LoginForm() {
         >
           {errorMessage && (
             <>
-              <ExclamationCircleIcon className="text-danger h-5 w-5" />
-              <p className="text-danger text-sm">{errorMessage}</p>
+              <ExclamationCircleIcon className="h-5 w-5 text-danger" />
+              <p className="text-sm text-danger">{errorMessage}</p>
             </>
           )}
         </div>

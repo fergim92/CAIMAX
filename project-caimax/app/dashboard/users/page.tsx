@@ -18,7 +18,7 @@ export default async function Page() {
     <main>
       <h1 className="text-2xl">Usuarios</h1>
       <div className="relative overflow-x-auto overflow-y-hidden shadow-xl sm:rounded-lg">
-        <table className="mt-5 w-full table-auto bg-paper">
+        <table className="bg-lightPaper dark:bg-darkPaper mt-5 w-full table-auto">
           <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
             <tr>
               <th

@@ -1,6 +1,5 @@
 import { nextui } from '@nextui-org/react';
 import type { Config } from 'tailwindcss';
-
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,7 +8,12 @@ const config: Config = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        lightPaper: '#FCF6F5',
+        darkPaper: '#17222e',
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
@@ -17,7 +21,6 @@ const config: Config = {
       themes: {
         light: {
           colors: {
-            paper: '#FCF6F5',
             background: '#ddd4d3',
             foreground: '#101820',
             primary: {
@@ -42,7 +45,6 @@ const config: Config = {
         },
         dark: {
           colors: {
-            paper: '#17222e',
             background: '#101820',
             foreground: '#FCF6F5',
             primary: {
