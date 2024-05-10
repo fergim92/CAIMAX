@@ -1,129 +1,62 @@
-import { getUsers } from '@/app/lib/data';
-import { DeleteUserButton } from '@/app/ui/users/delete-button';
-import { Button } from '@nextui-org/react';
+import { countUsers, getFilteredUsers, getUsersPages } from '@/app/lib/data';
+
 import { Metadata } from 'next';
-import Link from 'next/link';
+
+import FilterCreateUser from '@/app/ui/users/filter-create-user';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'Usuarios',
 };
 
-export default async function Page() {
-  const users = await getUsers();
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+  const totalPages = await getUsersPages(query);
+  const users = await getFilteredUsers(query, currentPage);
+  const totalUsers = await countUsers(query);
+  const [nextUser] = await getFilteredUsers(query, currentPage + 1);
+  const [prevUser] =
+    currentPage - 1 > 0
+      ? (await getFilteredUsers(query, currentPage - 1)).slice(-1)
+      : [undefined];
 
-  if (!users) {
-    return <p>No hay usuarios</p>;
-  }
   return (
     <main>
+      <Toaster
+        closeButton
+        toastOptions={{
+          classNames: {
+            toast: 'bg-lightPaper dark:bg-darkPaper',
+            title: 'text-foreground dark:text-[#FCF6F5]',
+            description: 'text-foreground dark:text-[#FCF6F5]',
+            error: 'text-danger 1px solid border-danger',
+            success: 'text-success 1px solid border-success ',
+            actionButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+            cancelButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+            closeButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+          },
+        }}
+      />
       <h1 className="text-2xl">Usuarios</h1>
-      <div className="relative overflow-x-auto overflow-y-hidden shadow-xl sm:rounded-lg">
-        <table className="bg-lightPaper dark:bg-darkPaper mt-5 w-full table-auto">
-          <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
-            <tr>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Nombre
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Apellido
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                DNI
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Rol
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Detalles
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2  border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Eliminar
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr
-                key={user.id}
-                className="border-collapse text-center hover:bg-gray-200 dark:hover:bg-gray-600"
-              >
-                <td
-                  scope="row"
-                  className=" border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {user.name}
-                </td>
-                <td
-                  scope="row"
-                  className=" border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {user.last_name}
-                </td>
-                <td
-                  scope="row"
-                  className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {user.dni}
-                </td>
-                <td
-                  scope="row"
-                  className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  {user.role}
-                </td>
-                <td
-                  scope="row"
-                  className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                >
-                  <Link href={`/dashboard/users/${user.id}`}>
-                    <Button
-                      className="border-primary font-bold hover:border-1 hover:text-primary"
-                      variant="light"
-                      size="sm"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                        />
-                      </svg>
-                    </Button>
-                  </Link>
-                </td>
-                <td scope="row" className=" border-collapse ">
-                  <DeleteUserButton data={user} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <FilterCreateUser
+        data={users}
+        nextPageUser={nextUser}
+        prevPageUser={prevUser}
+        searchParams={searchParams}
+        totalPages={totalPages}
+        totalUsers={totalUsers}
+      />
     </main>
   );
 }

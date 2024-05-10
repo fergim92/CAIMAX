@@ -4,20 +4,15 @@ import { Input } from '@/app/ui/form/input';
 import { useEffect, useState } from 'react';
 import { User } from '@/app/lib/definitions';
 import { updateUser } from '@/app/lib/actions';
-import { useFormState, useFormStatus } from 'react-dom';
-import Toast from '../toast';
-import { useContext } from 'react';
-import ThemeContext from '@/context/theme-context';
+// import { useContext } from 'react';
+// import ThemeContext from '@/context/theme-context';
+import { toast } from 'sonner';
 
 export const UserForm = ({ data }: { data: User }) => {
-  const toast = Toast();
-  const { theme } = useContext(ThemeContext);
+  //const { theme } = useContext(ThemeContext);
+  const [loading, setLoading] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
-  const user = data;
-  const updateUserWithId = updateUser.bind(null, user.id);
-  const initialState = { message: '', errors: {} };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [state, dispatch] = useFormState(updateUserWithId, initialState);
+  const [user, setUser] = useState(data);
   const [name, setName] = useState(user.name);
   const [lastName, setLastName] = useState(user.last_name);
   const [dni, setDni] = useState(user.dni.toString());
@@ -95,25 +90,49 @@ export const UserForm = ({ data }: { data: User }) => {
       setRoleError(true);
     }
   };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    toast.promise(
+      updateUser(user.id, formData)
+        .then(() => {
+          setUser({
+            ...user,
+            name: name,
+            last_name: lastName,
+            dni: parseInt(dni),
+            role: parseInt(role),
+            fingerprint: fingerprint ? 'fingerprint' : null,
+            rfid: rfid ? 'rfid' : null,
+            tag_rfid: tagRfid ? 'tag_rfid' : null,
+          });
+          setLoading(false);
+          setTrySubmit(false);
+          setOnEdit(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+          setTrySubmit(false);
+          setOnEdit(false);
+        }),
+      {
+        loading: 'Editando...',
+        success: 'Usuario creado con exito',
+        error: 'Error',
+      },
+    );
+  };
 
   if (!user) {
     return <div>Usuario no encontrado</div>;
   } else {
     return (
       <form
-        action={(e) => {
-          dispatch(e);
-          setOnEdit(false);
-          setTrySubmit(false);
-          toast.fire({
-            icon: 'success',
-            iconColor: '#00e615',
-            title: 'Usario actualizado!',
-            background: theme === 'dark' ? '#17222e' : '#FCF6F5',
-            color: theme === 'dark' ? '#FCF6F5' : '#101820',
-          });
-        }}
-        className="bg-lightPaper dark:bg-darkPaper mt-5 rounded-lg p-5 shadow-xl"
+        onSubmit={handleSubmit}
+        className="mt-5 rounded-lg bg-lightPaper p-5 shadow-xl dark:bg-darkPaper"
       >
         <div className="flex flex-col gap-3 md:flex-row md:justify-between md:pb-3">
           <Input
@@ -243,7 +262,12 @@ export const UserForm = ({ data }: { data: User }) => {
             {onEdit ? (
               <>
                 <div className="flex gap-2">
-                  <SaveButton
+                  <Button
+                    size="sm"
+                    color="primary"
+                    variant="bordered"
+                    type="submit"
+                    isLoading={loading}
                     isDisabled={!changes}
                     onClick={() => {
                       setTrySubmit(true);
@@ -252,7 +276,25 @@ export const UserForm = ({ data }: { data: User }) => {
                       validateDni(dni);
                       validateRole(role);
                     }}
-                  />
+                    endContent={
+                      !loading && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="h-6 w-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m4.5 12.75 6 6 9-13.5"
+                          />
+                        </svg>
+                      )
+                    }
+                  ></Button>
                   <Button
                     size="sm"
                     color="danger"
@@ -318,41 +360,4 @@ export const UserForm = ({ data }: { data: User }) => {
       </form>
     );
   }
-};
-type SaveButtonProps = {
-  onClick?: () => void;
-  isDisabled?: boolean;
-};
-
-const SaveButton = ({ onClick, isDisabled }: SaveButtonProps) => {
-  const { pending } = useFormStatus();
-  return (
-    <Button
-      size="sm"
-      color="primary"
-      variant="bordered"
-      type="submit"
-      isLoading={pending}
-      onClick={onClick}
-      isDisabled={isDisabled}
-      endContent={
-        !pending && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m4.5 12.75 6 6 9-13.5"
-            />
-          </svg>
-        )
-      }
-    ></Button>
-  );
 };

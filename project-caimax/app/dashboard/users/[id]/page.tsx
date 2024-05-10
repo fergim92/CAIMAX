@@ -4,7 +4,8 @@ import { getAccessActivityByUserId, getUserById } from '@/app/lib/data';
 import moment from 'moment';
 import Link from 'next/link';
 import { Button } from '@nextui-org/react';
-import { UserForm } from '@/app/ui/users/user-form';
+import { UserForm } from '@/app/ui/users/edit-form';
+import { Toaster } from 'sonner';
 
 // UUIDs vs. Auto-incrementing Keys
 // We use UUIDs instead of incrementing keys (e.g., 1, 2, 3, etc.).
@@ -28,6 +29,24 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
   return (
     <main>
+      <Toaster
+        closeButton
+        toastOptions={{
+          classNames: {
+            toast: 'bg-lightPaper dark:bg-darkPaper',
+            title: 'text-foreground dark:text-[#FCF6F5]',
+            description: 'text-foreground dark:text-[#FCF6F5]',
+            error: 'text-danger 1px solid border-danger',
+            success: 'text-success 1px solid border-success ',
+            actionButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+            cancelButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+            closeButton:
+              'bg-lightPaper dark:bg-darkPaper text-foreground dark:text-[#FCF6F5] border-darkPaper dark:border-lightPaper',
+          },
+        }}
+      />
       <div className="flex justify-between">
         <h1 className="text-2xl">Detalles de usuario</h1>
         <Link href="/dashboard/users">
@@ -75,7 +94,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
       <UserForm data={user} />
       <div className="relative overflow-x-auto shadow-xl sm:rounded-lg">
-        <table className="bg-lightPaper dark:bg-darkPaper mt-5 w-full table-auto">
+        <table className="mt-5 w-full table-auto bg-lightPaper dark:bg-darkPaper">
           <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
             <tr>
               <th

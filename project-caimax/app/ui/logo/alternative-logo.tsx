@@ -19,6 +19,7 @@ const AlternativeLogo = ({
   return (
     <Link href="/">
       <Image
+        priority={true}
         src={theme === 'dark' ? LogoDark : LogoLight}
         width={width}
         height={height}

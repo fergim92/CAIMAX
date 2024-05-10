@@ -17,9 +17,9 @@ export type User = {
   name: string;
   last_name: string;
   dni: number;
-  fingerprint: string;
-  rfid: string;
-  tag_rfid: string;
+  fingerprint: string | null;
+  rfid: string | null;
+  tag_rfid: string | null;
 };
 
 export type AccessActivity = {
@@ -61,15 +61,15 @@ export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
   amount: number;
 };
 
-export type InvoicesTable = {
+export type UsersTable = {
   id: string;
-  customer_id: string;
   name: string;
-  email: string;
-  image_url: string;
-  date: string;
-  amount: number;
-  status: 'pending' | 'paid';
+  last_name: string;
+  dni: string;
+  role: string;
+  fingerprint: string | null;
+  rfid: string | null;
+  tag_rfid: string | null;
 };
 
 export type CustomersTableType = {

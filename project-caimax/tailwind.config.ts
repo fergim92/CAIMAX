@@ -12,6 +12,20 @@ const config: Config = {
       colors: {
         lightPaper: '#FCF6F5',
         darkPaper: '#17222e',
+        lightBackground: '##ddd4d3',
+        darkBackground: '#101820',
+      },
+      light: {
+        colors: {
+          background: '#ddd4d3',
+          foreground: '#101820',
+        },
+      },
+      dark: {
+        colors: {
+          background: '#101820',
+          foreground: '#FCF6F5',
+        },
       },
     },
   },

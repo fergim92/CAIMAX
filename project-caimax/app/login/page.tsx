@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import LoginForm from '@/app/ui/login-form';
+import LoginForm from '@/app/ui/login/login-form';
 import Header from '../ui/header';
 import Footer from '../ui/footer';
 

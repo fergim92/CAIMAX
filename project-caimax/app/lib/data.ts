@@ -2,13 +2,28 @@ import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import {
   InvoiceForm,
-  InvoicesTable,
+  UsersTable,
   LatestInvoiceRaw,
   Admin,
   User,
   AccessActivityWithUser,
 } from './definitions';
 import { formatCurrency } from './utils';
+
+export async function countUsers(query: string) {
+  noStore();
+  try {
+    const data = await sql`SELECT COUNT(*) FROM users 
+      WHERE name ILIKE ${`%${query}%`} OR 
+      last_name ILIKE ${`%${query}%`} OR 
+      dni::text ILIKE ${`%${query}%`} OR 
+      role::text ILIKE ${`%${query}%`}`;
+    return Number(data.rows[0].count);
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to count users.');
+  }
+}
 
 export async function getUserById(id: string) {
   try {
@@ -33,8 +48,8 @@ export async function updateUser(
     throw new Error('Failed to update user.');
   }
 }
-
 export async function getUsers() {
+  noStore();
   try {
     const data = await sql<User>`
       SELECT
@@ -155,61 +170,67 @@ export async function fetchCardData() {
 }
 
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
-  query: string,
-  currentPage: number,
-) {
+export async function getFilteredUsers(query: string, currentPage: number) {
   noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable>`
+    const users = await sql<UsersTable>`
+    SELECT *
+    FROM (
       SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
+            id,
+            name,
+            last_name,
+            dni, 
+            role,
+            CASE 
+              WHEN fingerprint IS NOT NULL THEN 'huella' ELSE null 
+            END AS fingerprint,
+            CASE
+              WHEN rfid IS NOT NULL THEN 'rfid' ELSE null 
+            END AS rfid,
+            CASE
+              WHEN tag_rfid IS NOT NULL THEN 'tag rfid' ELSE null 
+            END AS tag_rfid
+          FROM users
+    ) AS subquery
       WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
+        name ILIKE ${`%${query}%`} OR
+        last_name ILIKE ${`%${query}%`} OR
+        dni::text ILIKE ${`%${query}%`} OR
+        role::text ILIKE ${`%${query}%`} OR
+        fingerprint::text ILIKE ${`%${query}%`}  OR
+        rfid::text ILIKE ${`%${query}%`} OR
+        tag_rfid::text ILIKE ${`${query}%`}
+      ORDER BY id DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    return invoices.rows;
+    return users.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    throw new Error('Failed to fetch users.');
   }
 }
 
-export async function fetchInvoicesPages(query: string) {
+export async function getUsersPages(query: string) {
   noStore();
   try {
     const count = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
+    FROM users
     WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
+      name ILIKE ${`%${query}%`} OR
+      last_name ILIKE ${`%${query}%`} OR
+      dni::text ILIKE ${`%${query}%`} OR
+      role::text ILIKE ${`%${query}%`} 
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    throw new Error('Failed to fetch total number of users.');
   }
 }
 

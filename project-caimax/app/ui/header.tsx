@@ -1,4 +1,4 @@
-import AlternativeLogo from './alternative-logo';
+import AlternativeLogo from './logo/alternative-logo';
 import ToggleTheme from './toggle-theme';
 
 const Header = () => {

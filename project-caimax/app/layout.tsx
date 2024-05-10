@@ -2,7 +2,6 @@ import '@/app/ui/global.css';
 
 import { Metadata } from 'next';
 
-import { inter } from '@/app/ui/fonts';
 import Particles from '@/app/ui/particles';
 import { ThemeProvider } from '@/context/theme-provider';
 import { NextUIProviderContext } from '@/context/nextui-provider';
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
   },
   description:
     'Proyecto CAIMAX de la materia Laboratorio de Sistemas Embebidos UNRN',
-  metadataBase: new URL('https://unrn.edu.ar/'),
   openGraph: {
     title: 'CAIMAX Dashboard',
     description:
@@ -40,7 +38,7 @@ export default function RootLayout({
       <ThemeProvider>
         <NextUIProviderContext>
           <body
-            className={`${inter.className} antialiased`}
+            className={'antialiased '}
             style={{
               minHeight: '100vh',
               display: 'flex',
