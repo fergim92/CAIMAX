@@ -16,7 +16,7 @@ import {
 import { UsersTable } from '@/app/lib/definitions';
 import { useState } from 'react';
 import { CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline';
-import { useTotalUsersPages, useUsers } from '@/hooks/swr';
+import { useTotalUsersPages, useUsers } from '../../../hooks/swr-hooks';
 import { usePathname, useRouter } from 'next/navigation';
 
 export const UsersTableComponent = ({

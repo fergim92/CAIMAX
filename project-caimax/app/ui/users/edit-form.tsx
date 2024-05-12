@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { User } from '@/app/lib/definitions';
 import { updateUser } from '@/app/lib/actions';
 import { toast } from 'sonner';
-import { useUserById } from '@/hooks/swr';
+import { useUserById } from '../../../hooks/swr-hooks';
 import { usePathname } from 'next/navigation';
 
 export const UserForm = () => {

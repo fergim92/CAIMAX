@@ -4,7 +4,11 @@ import { Input } from '@/app/ui/form/input';
 import { useState } from 'react';
 import { createUser } from '@/app/lib/actions';
 import { toast } from 'sonner';
-import { useUsers, useTotalUsersPages, useTotalUsers } from '@/hooks/swr';
+import {
+  useUsers,
+  useTotalUsersPages,
+  useTotalUsers,
+} from '../../../hooks/swr-hooks';
 
 type CreateUserFormProps = {
   setActiveForm: (activeForm: boolean) => void;

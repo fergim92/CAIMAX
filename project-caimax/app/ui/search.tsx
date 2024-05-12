@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Input } from '@/app/ui/form/input';
-import { useTotalUsersPages } from '@/hooks/swr';
+import { useTotalUsersPages } from '../../hooks/swr-hooks';
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();

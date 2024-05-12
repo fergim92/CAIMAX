@@ -1,6 +1,9 @@
 'use client';
 import moment from 'moment';
-import { useAccessActivity, useTotalAccessActivityPages } from '@/hooks/swr';
+import {
+  useAccessActivity,
+  useTotalAccessActivityPages,
+} from '../../../hooks/swr-hooks';
 import { AccessActivityWithUser } from '@/app/lib/definitions';
 import {
   Pagination,

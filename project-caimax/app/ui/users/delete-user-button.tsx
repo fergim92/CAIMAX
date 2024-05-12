@@ -7,7 +7,11 @@ import ThemeContext from '@/context/theme-context';
 import Swal from 'sweetalert2';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useUsers, useTotalUsers, useTotalUsersPages } from '@/hooks/swr';
+import {
+  useUsers,
+  useTotalUsers,
+  useTotalUsersPages,
+} from '../../../hooks/swr-hooks';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 export const DeleteUserButton = ({

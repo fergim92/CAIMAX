@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useTotalUsersPages } from '@/hooks/swr';
+import { useTotalUsersPages } from '../../hooks/swr-hooks';
 
 export default function Pagination() {
   const { totalPages } = useTotalUsersPages();
