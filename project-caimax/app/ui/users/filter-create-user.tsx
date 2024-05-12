@@ -1,52 +1,26 @@
 'use client';
 import { Button } from '@nextui-org/react';
 import Search from '@/app/ui/search';
-import { useEffect, useState } from 'react';
-import { UsersTable } from '@/app/lib/definitions';
+import { useState } from 'react';
 import { UsersTableComponent } from './table';
-import Pagination from '../pagination';
 import { CreateUserForm } from './create-form';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FilterCreateUser = ({
-  data,
-  nextPageUser,
-  prevPageUser,
   searchParams,
-  totalPages,
-  totalUsers,
 }: {
-  data: UsersTable[];
-  prevPageUser: UsersTable | undefined;
-  nextPageUser: UsersTable;
   searchParams?: {
     query?: string;
     page?: string;
   };
-  totalPages: number;
-  totalUsers: number;
 }) => {
   const [activeForm, setActiveForm] = useState(false);
-  const [users, setUsers] = useState(data);
-  const [pages, setPages] = useState(totalPages);
-  const [cantUsers, setCantUsers] = useState(totalUsers);
-  const query = searchParams?.query;
-  useEffect(() => {
-    setUsers(data);
-    setPages(pages);
-  }, [data, cantUsers, query]);
-  useEffect(() => {
-    setPages(totalPages);
-  }, [totalPages]);
-  useEffect(() => {
-    setCantUsers(totalUsers);
-  }, [totalUsers]);
 
   return (
     <>
       <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
         <Search placeholder="Buscar usuarios" />
-        <div>
+        <div className="mb-2 md:m-0">
           <Button
             color="success"
             onClick={() => {
@@ -89,33 +63,14 @@ const FilterCreateUser = ({
           >
             <CreateUserForm
               setActiveForm={setActiveForm}
-              users={users}
-              setUsers={setUsers}
-              setPages={setPages}
               searchParams={searchParams}
-              prevPageUser={prevPageUser}
-              pages={pages}
-              totalUsers={totalUsers}
-              setCantUsers={setCantUsers}
             />
           </motion.section>
         )}
       </AnimatePresence>
 
-      <div className="relative overflow-x-auto overflow-y-hidden shadow-xl sm:rounded-lg">
-        <UsersTableComponent
-          users={users}
-          setUsers={setUsers}
-          nextPageUser={nextPageUser}
-          searchParams={searchParams}
-          setPages={setPages}
-          totalUsers={cantUsers}
-          setCantUsers={setCantUsers}
-          pages={pages}
-        />
-      </div>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={pages} />
+      <div className="relative mt-3 overflow-x-auto overflow-y-hidden shadow-xl sm:rounded-lg">
+        <UsersTableComponent searchParams={searchParams} />
       </div>
     </>
   );

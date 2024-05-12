@@ -4,11 +4,13 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Input } from '@/app/ui/form/input';
+import { useTotalUsersPages } from '@/hooks/swr';
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const { mutateTotalPages } = useTotalUsersPages();
   const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
@@ -17,6 +19,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     } else {
       params.delete('query');
     }
+    mutateTotalPages();
     replace(`${pathname}?${params.toString()}`);
   }, 300);
   return (

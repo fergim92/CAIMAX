@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: 'CAIMAX',
     images: [
       {
-        url: './opengraph-image.png', // Must be an absolute URL
+        url: './opengraph-image.png',
         width: 800,
         height: 600,
       },
@@ -48,6 +48,7 @@ export default function RootLayout({
               flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'center',
+              overflow: 'auto !important',
             }}
           >
             <Particles />

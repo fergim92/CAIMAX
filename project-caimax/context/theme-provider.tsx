@@ -22,8 +22,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       applyTheme(newTheme);
       setThemeLoaded(true);
     };
-
-    // Set the initial theme based on storage or system preference
     if (storedTheme) {
       applyTheme(storedTheme);
       setThemeLoaded(true);
@@ -31,11 +29,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       applyTheme(prefersDark.matches ? 'dark' : 'light');
       setThemeLoaded(true);
     }
-
-    // Event listener for changes in the system theme
     prefersDark.addEventListener('change', handleSystemThemeChange);
-
-    // Clean up the event listener
     return () => {
       prefersDark.removeEventListener('change', handleSystemThemeChange);
     };

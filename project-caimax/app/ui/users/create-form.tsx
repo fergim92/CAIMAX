@@ -4,34 +4,25 @@ import { Input } from '@/app/ui/form/input';
 import { useState } from 'react';
 import { createUser } from '@/app/lib/actions';
 import { toast } from 'sonner';
-import { UsersTable } from '@/app/lib/definitions';
+import { useUsers, useTotalUsersPages, useTotalUsers } from '@/hooks/swr';
 
 type CreateUserFormProps = {
   setActiveForm: (activeForm: boolean) => void;
-  users: UsersTable[];
-  setUsers: (users: UsersTable[]) => void;
-  setPages: (pages: number) => void;
   searchParams?: {
     query?: string;
     page?: string;
   };
-  pages: number;
-  prevPageUser: UsersTable | undefined;
-  totalUsers: number;
-  setCantUsers: (cantUsers: number) => void;
 };
 
 export const CreateUserForm = ({
   setActiveForm,
-  users,
-  setUsers,
-  setPages,
-  pages,
-  prevPageUser,
-  totalUsers,
   searchParams,
-  setCantUsers,
 }: CreateUserFormProps) => {
+  const query = searchParams?.query;
+  const currentPage = Number(searchParams?.page) || 1;
+  const { mutateUsers } = useUsers(query, currentPage);
+  const { totalPages, mutateTotalPages } = useTotalUsersPages();
+  const { totalUsers, mutateTotalUsers } = useTotalUsers();
   const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState('');
@@ -52,7 +43,6 @@ export const CreateUserForm = ({
   const [lastNameError, setLastNameError] = useState(false);
   const [dniError, setDniError] = useState(false);
   const [roleError, setRoleError] = useState(false);
-  const query = searchParams?.query;
 
   const validateName = (name: string) => {
     const re = /^.*$/i;
@@ -92,6 +82,7 @@ export const CreateUserForm = ({
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
+
     toast.promise(
       createUser(formData)
         .then(() => {
@@ -100,25 +91,20 @@ export const CreateUserForm = ({
             query?.includes(lastName) ||
             query?.includes(dni) ||
             query?.includes(role) ||
-            query == undefined
+            !query
           ) {
-            if (prevPageUser !== undefined) {
-              setUsers([prevPageUser, ...users.slice(0, 5)]);
-            } else {
-              setUsers([
-                {
-                  id: users.length.toString(),
-                  name: name,
-                  last_name: lastName,
-                  dni: dni,
-                  role: role,
-                  fingerprint: fingerprint ? 'huella' : null,
-                  rfid: rfid ? 'rfid' : null,
-                  tag_rfid: tagRfid ? 'tag rfid' : null,
-                },
-                ...users.slice(0, 5),
-              ]);
-            }
+            mutateUsers();
+          }
+          mutateTotalUsers(totalUsers + 1, false);
+          if (
+            ((query?.includes(name) ||
+              query?.includes(lastName) ||
+              query?.includes(dni) ||
+              query?.includes(role)) &&
+              totalUsers % 6 === 0) ||
+            (query == undefined && totalUsers % 6 === 0)
+          ) {
+            mutateTotalPages(totalPages + 1, false);
           }
           setLoading(false);
           setTrySubmit(false);
@@ -132,26 +118,15 @@ export const CreateUserForm = ({
           setSelected([]);
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           setLoading(false);
         }),
       {
         loading: 'Creando...',
-        success: 'Usuario creado con exito',
-        error: 'Error',
+        success: 'Usuario creado con éxito',
+        error: 'Error al crear el usuario',
       },
     );
-    if (
-      ((query?.includes(name) ||
-        query?.includes(lastName) ||
-        query?.includes(dni) ||
-        query?.includes(role)) &&
-        totalUsers % 6 === 0) ||
-      (query == undefined && totalUsers % 6 === 0)
-    ) {
-      setPages(pages + 1);
-    }
-    setCantUsers(totalUsers + 1);
   };
 
   return (
@@ -253,14 +228,14 @@ export const CreateUserForm = ({
           }}
         />
       </div>
-      <CheckboxGroup
-        label="Datos de acceso"
-        color="primary"
-        value={selected}
-        onValueChange={setSelected}
-      >
-        <div className="flex items-end justify-between md:items-start">
-          <div className="flex flex-col gap-1 md:flex-row md:gap-10">
+      <div className="flex items-end justify-between">
+        <CheckboxGroup
+          label="Datos de acceso"
+          color="primary"
+          value={selected}
+          onValueChange={setSelected}
+        >
+          <div className="flex flex-col gap-1 md:flex-row md:gap-5">
             <Checkbox
               name="fingerprint"
               value="fingerprint"
@@ -279,53 +254,24 @@ export const CreateUserForm = ({
               Tag RFID
             </Checkbox>
           </div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              color="primary"
-              variant="bordered"
-              type="submit"
-              isLoading={loading}
-              onClick={() => {
-                setTrySubmit(true);
-                validateName(name);
-                validateLastName(lastName);
-                validateDni(dni);
-                validateRole(role);
-              }}
-              isDisabled={loading}
-              endContent={
-                !loading && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m4.5 12.75 6 6 9-13.5"
-                    />
-                  </svg>
-                )
-              }
-            ></Button>
-            <Button
-              size="sm"
-              color="danger"
-              variant="bordered"
-              onClick={() => {
-                setTrySubmit(false);
-                setNameError(false);
-                setLastNameError(false);
-                setDniError(false);
-                setRoleError(false);
-                setActiveForm(false);
-              }}
-              endContent={
+        </CheckboxGroup>
+        <div className="ml-2 flex flex-col gap-1 md:flex-row">
+          <Button
+            size="sm"
+            color="primary"
+            variant="bordered"
+            type="submit"
+            isLoading={loading}
+            onClick={() => {
+              setTrySubmit(true);
+              validateName(name);
+              validateLastName(lastName);
+              validateDni(dni);
+              validateRole(role);
+            }}
+            isDisabled={loading}
+            endContent={
+              !loading && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -337,14 +283,43 @@ export const CreateUserForm = ({
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
+                    d="m4.5 12.75 6 6 9-13.5"
                   />
                 </svg>
-              }
-            ></Button>
-          </div>
+              )
+            }
+          ></Button>
+          <Button
+            size="sm"
+            color="danger"
+            variant="bordered"
+            onClick={() => {
+              setTrySubmit(false);
+              setNameError(false);
+              setLastNameError(false);
+              setDniError(false);
+              setRoleError(false);
+              setActiveForm(false);
+            }}
+            endContent={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            }
+          ></Button>
         </div>
-      </CheckboxGroup>
+      </div>
     </form>
   );
 };

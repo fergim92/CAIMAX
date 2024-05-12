@@ -1,5 +1,3 @@
-import { countUsers, getFilteredUsers, getUsersPages } from '@/app/lib/data';
-
 import { Metadata } from 'next';
 
 import FilterCreateUser from '@/app/ui/users/filter-create-user';
@@ -17,19 +15,8 @@ export default async function Page({
     page?: string;
   };
 }) {
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await getUsersPages(query);
-  const users = await getFilteredUsers(query, currentPage);
-  const totalUsers = await countUsers(query);
-  const [nextUser] = await getFilteredUsers(query, currentPage + 1);
-  const [prevUser] =
-    currentPage - 1 > 0
-      ? (await getFilteredUsers(query, currentPage - 1)).slice(-1)
-      : [undefined];
-
   return (
-    <main>
+    <div>
       <Toaster
         closeButton
         toastOptions={{
@@ -49,14 +36,7 @@ export default async function Page({
         }}
       />
       <h1 className="text-2xl">Usuarios</h1>
-      <FilterCreateUser
-        data={users}
-        nextPageUser={nextUser}
-        prevPageUser={prevUser}
-        searchParams={searchParams}
-        totalPages={totalPages}
-        totalUsers={totalUsers}
-      />
-    </main>
+      <FilterCreateUser searchParams={searchParams} />
+    </div>
   );
 }

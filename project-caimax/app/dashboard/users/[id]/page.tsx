@@ -1,11 +1,10 @@
-import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getAccessActivityByUserId, getUserById } from '@/app/lib/data';
-import moment from 'moment';
 import Link from 'next/link';
 import { Button } from '@nextui-org/react';
 import { UserForm } from '@/app/ui/users/edit-form';
 import { Toaster } from 'sonner';
+import { UserDetailsTableComponent } from '@/app/ui/users/details-table';
+import Search from '@/app/ui/search';
 
 // UUIDs vs. Auto-incrementing Keys
 // We use UUIDs instead of incrementing keys (e.g., 1, 2, 3, etc.).
@@ -17,18 +16,16 @@ export const metadata: Metadata = {
   title: 'Detalles',
 };
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
-  const [user, userActivity] = await Promise.all([
-    getUserById(id),
-    getAccessActivityByUserId(id),
-  ]);
-
-  if (!user) {
-    notFound();
-  }
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: {
+    query?: string;
+    page?: string;
+  };
+}) {
   return (
-    <main>
+    <div>
       <Toaster
         closeButton
         toastOptions={{
@@ -92,89 +89,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         </Link>
       </div>
 
-      <UserForm data={user} />
+      <UserForm />
+      <Search placeholder="Buscar registros" />
       <div className="relative overflow-x-auto shadow-xl sm:rounded-lg">
-        <table className="mt-5 w-full table-auto bg-lightPaper dark:bg-darkPaper">
-          <thead className=" bg-gray-300 font-bold uppercase dark:bg-gray-800">
-            <tr>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Acceso
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Lugar
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Fecha
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-r-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Entrada
-              </th>
-              <th
-                scope="col"
-                className="border-collapse border-b-2 border-stone-950 px-6 py-3 dark:border-white"
-              >
-                Salida
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {userActivity.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="py-2 text-center">
-                  No hay registros
-                </td>
-              </tr>
-            ) : (
-              userActivity.map((activity) => (
-                <tr
-                  key={activity.id}
-                  className="border-collapse text-center hover:bg-gray-200 dark:hover:bg-gray-600"
-                >
-                  <td
-                    scope="row"
-                    className="border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                  >
-                    {activity.access_type}
-                  </td>
-                  <td
-                    scope="row"
-                    className=" border-collapse border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                  >
-                    {activity.location}
-                  </td>
-                  <td
-                    scope="row"
-                    className="border-collapse  border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                  >
-                    {moment(activity.datetime).format('DD/MM/YYYY')}
-                  </td>
-                  <td
-                    scope="row"
-                    className="border-collapse  border-r-2 border-stone-950 px-2 py-1 dark:border-white"
-                  >
-                    {moment(activity.datetime).format('HH:mm:ss')}
-                  </td>
-                  <td scope="row" className=" px-2 py-1">
-                    {moment(activity.exit_datetime).format('HH:mm:ss')}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+        <UserDetailsTableComponent searchParams={searchParams} />
       </div>
-    </main>
+    </div>
   );
 }

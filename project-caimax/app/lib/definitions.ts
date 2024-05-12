@@ -1,7 +1,3 @@
-// This file contains type definitions for your data.
-// It describes the shape of the data, and what data type each property should accept.
-// For simplicity of teaching, we're manually defining these types.
-// However, these types are generated automatically if you're using an ORM such as Prisma.
 export type Admin = {
   id: string;
   role: number;
@@ -43,11 +39,6 @@ export type AccessActivityWithUser = {
   access_type: 'Huella digital' | 'RFID';
 };
 
-export type Revenue = {
-  month: string;
-  revenue: number;
-};
-
 export type LatestInvoice = {
   id: string;
   name: string;
@@ -56,12 +47,12 @@ export type LatestInvoice = {
   amount: string;
 };
 
-// The database returns a number for amount, but we later format it to a string with the formatCurrency function
 export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
   amount: number;
 };
 
 export type UsersTable = {
+  [key: string]: string | null;
   id: string;
   name: string;
   last_name: string;
@@ -70,16 +61,8 @@ export type UsersTable = {
   fingerprint: string | null;
   rfid: string | null;
   tag_rfid: string | null;
-};
-
-export type CustomersTableType = {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: number;
-  total_paid: number;
+  see: string;
+  delete: string;
 };
 
 export type FormattedUsersTable = {
@@ -94,11 +77,4 @@ export type UserField = {
   name: string;
   last_name: string;
   dni: string;
-};
-
-export type InvoiceForm = {
-  id: string;
-  customer_id: string;
-  amount: number;
-  status: 'pending' | 'paid';
 };

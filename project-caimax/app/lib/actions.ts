@@ -52,42 +52,6 @@ export async function authenticate(
 
 const CreateUser = FormSchema.omit({ id: true });
 
-// export async function createUser(prevState: State, formData: FormData) {
-//   // Validate form using Zod
-//   const validatedFields = CreateUser.safeParse({
-//     name: formData.get('name'),
-//     last_name: formData.get('last_name'),
-//     dni: formData.get('dni'),
-//     role: formData.get('role'),
-//     fingerprint: formData.get('fingerprint'),
-//     rfid: formData.get('rfid'),
-//     tag_rfid: formData.get('tag_rfid'),
-//   });
-
-//   if (!validatedFields.success) {
-//     return {
-//       errors: validatedFields.error.flatten().fieldErrors,
-//       message: 'Faltan datos. Error al crear usuario.',
-//     };
-//   }
-
-//   const { name, last_name, dni, role, fingerprint, rfid, tag_rfid } =
-//     validatedFields.data;
-
-//   // Insert data into the database
-//   try {
-//     await sql`
-//         INSERT INTO users (name, last_name, dni, role, fingerprint, rfid, tag_rfid)
-//         VALUES (${name}, ${last_name}, ${dni}, ${role}, ${fingerprint}, ${rfid}, ${tag_rfid})
-//       `;
-//   } catch (error) {
-//     return {
-//       message: 'Database Error: Failed to Create User.',
-//     };
-//   }
-//   revalidatePath('/dashboard/users');
-// }
-
 export async function createUser(formData: FormData): Promise<string> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
@@ -127,46 +91,6 @@ export async function createUser(formData: FormData): Promise<string> {
 }
 
 const UpdateUser = FormSchema.omit({ id: true });
-
-// export async function updateUser(
-//   id: string,
-//   prevState: State,
-//   formData: FormData,
-// ) {
-//   const validatedFields = UpdateUser.safeParse({
-//     name: formData.get('name'),
-//     last_name: formData.get('last_name'),
-//     dni: formData.get('dni'),
-//     role: formData.get('role'),
-//     fingerprint: formData.get('fingerprint'),
-//     rfid: formData.get('rfid'),
-//     tag_rfid: formData.get('tag_rfid'),
-//   });
-
-//   if (!validatedFields.success) {
-//     return {
-//       errors: validatedFields.error.flatten().fieldErrors,
-//       message: 'Faltan datos. Error al actualizar usuario.',
-//     };
-//   }
-
-//   const { name, last_name, dni, role, fingerprint, rfid, tag_rfid } =
-//     validatedFields.data;
-
-//   try {
-//     await sql`
-//         UPDATE users
-//         SET name = ${name}, last_name = ${last_name}, dni = ${dni},
-//         role = ${role}, fingerprint = ${fingerprint}, rfid = ${rfid}, tag_rfid = ${tag_rfid}
-//         WHERE id = ${id}
-//       `;
-//   } catch (error) {
-//     return { message: 'Database Error: Failed to Update User.' };
-//   }
-
-//   revalidatePath(`/dashboard/users/${id}`);
-//   redirect(`/dashboard/users/${id}`);
-// }
 
 export async function updateUser(id: string, formData: FormData) {
   // eslint-disable-next-line no-async-promise-executor
