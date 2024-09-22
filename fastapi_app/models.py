@@ -6,8 +6,14 @@ class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
+    last_name = Column(String, index=True)
+    dni = Column(String, unique=True, index=True)
+    fingerprint = Column(LargeBinary, nullable=True)  
+    rfid = Column(String, nullable=True)
+    role = Column(Integer, nullable=False)
+    tag_rfid = Column(String, nullable=True)
     access_activities = relationship("AccessActivity", back_populates="user")
+
 
 class Lector(Base):
     __tablename__ = "lectors"
