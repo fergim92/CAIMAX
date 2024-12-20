@@ -3,6 +3,9 @@
 ## Descripción
 El Dashboard Web de CAIMAX es la interfaz de usuario para gestionar y monitorear el sistema de seguridad biométrico basado en un sensor de huellas dactilares integrado con un microcontrolador ESP32. Este dashboard permite a los usuarios administrar las configuraciones del sistema, registrar nuevas huellas dactilares, y visualizar registros de acceso.
 
+## Presentación
+Se realizó la presentación del examen final en: [Prezi](https://prezi.com/view/bhEy7sDEKb0derFWj4i1/)
+
 ## Estructura de la Base de Datos
 El sistema utiliza una base de datos PostgreSQL con la siguiente estructura relacional:
 
