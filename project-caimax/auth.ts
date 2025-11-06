@@ -28,6 +28,17 @@ export const { auth, signIn, signOut } = NextAuth({
           .safeParse(credentials);
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
+
+          // Credenciales de demo para pruebas
+          if (email === 'demo@test.com' && password === 'demo123') {
+            return {
+              id: 'demo-user',
+              name: 'Usuario Demo',
+              email: 'demo@test.com',
+              password: '', // No se necesita para demo
+            };
+          }
+
           const admin = await getAdmin(email);
           if (!admin) return null;
           const passwordsMatch = await bcrypt.compare(password, admin.password);

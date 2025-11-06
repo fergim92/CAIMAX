@@ -167,7 +167,7 @@ export async function getUsersPages(query: string) {
       name ILIKE ${`%${query}%`} OR
       last_name ILIKE ${`%${query}%`} OR
       dni::text ILIKE ${`%${query}%`} OR
-      role::text ILIKE ${`%${query}%`} 
+      role::text ILIKE ${`%${query}%`}
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
@@ -175,5 +175,61 @@ export async function getUsersPages(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of users.');
+  }
+}
+
+export async function getDashboardStats() {
+  noStore();
+  try {
+    const totalUsersPromise = sql`SELECT COUNT(*) FROM users`;
+    const todayActivityPromise = sql`
+      SELECT COUNT(*) FROM access_activity
+      WHERE DATE(datetime) = CURRENT_DATE`;
+    const weekActivityPromise = sql`
+      SELECT COUNT(*) FROM access_activity
+      WHERE datetime >= CURRENT_DATE - INTERVAL '7 days'`;
+
+    const data = await Promise.all([
+      totalUsersPromise,
+      todayActivityPromise,
+      weekActivityPromise,
+    ]);
+
+    const totalUsers = Number(data[0].rows[0].count ?? '0');
+    const todayActivity = Number(data[1].rows[0].count ?? '0');
+    const weekActivity = Number(data[2].rows[0].count ?? '0');
+
+    return {
+      totalUsers,
+      todayActivity,
+      weekActivity,
+    };
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch dashboard stats.');
+  }
+}
+
+export async function getRecentActivity(limit: number = 5) {
+  noStore();
+  try {
+    const data = await sql<AccessActivityWithUser>`
+      SELECT
+        access_activity.id,
+        access_activity.event,
+        access_activity.access_type,
+        access_activity.datetime,
+        access_activity.user_id,
+        users.name,
+        users.last_name,
+        users.role
+      FROM access_activity
+      JOIN users ON access_activity.user_id = users.id
+      ORDER BY access_activity.datetime DESC
+      LIMIT ${limit}`;
+    return data.rows;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch recent activity.');
   }
 }

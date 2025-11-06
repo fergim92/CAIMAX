@@ -47,6 +47,13 @@ export default function LoginForm() {
         <h1 className="mb-3 text-center text-2xl ">
           Iniciar sesión para continuar
         </h1>
+        <div className="mb-4 rounded-lg bg-blue-50 dark:bg-blue-950 p-3 text-center">
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            <span className="font-semibold">Para pruebas usa:</span>
+            <br />
+            demo@test.com / demo123
+          </p>
+        </div>
         <div className="flex flex-col gap-4">
           <Input
             label="Email"
