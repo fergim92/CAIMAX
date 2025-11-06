@@ -6,7 +6,7 @@ const SignoutButton = () => {
     <form
       action={async () => {
         'use server';
-        await signOut();
+        await signOut({ redirectTo: '/login' });
       }}
     >
       <button className="flex items-center justify-center gap-3 rounded-lg px-5 py-3 transition-colors hover:text-primary md:w-full">
